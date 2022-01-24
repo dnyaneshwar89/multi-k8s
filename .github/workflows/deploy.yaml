@@ -9,6 +9,8 @@ jobs:
   BUILD_IMAGE:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ${{ secrets.DOCKERHUB_USERNAME }}
+      - run: echo ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: LOGIN TO DOCKER
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: CHECKOUT THE CODE
