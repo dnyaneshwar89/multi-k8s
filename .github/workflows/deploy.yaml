@@ -1,0 +1,20 @@
+name: ci-cd
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  BUILD_IMAGE:
+    runs-on: ubuntu-latest
+    steps:
+      - name: LOGIN TO DOCKER
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
+      - name: CHECKOUT THE CODE
+        uses: actions/checkout@v2
+      - name: BUILD THE REACT CLIENT DEV IMAGE FOR TESTING
+        run: docker build -f ./client/Dockerfile.dev -t dnyaneshwar89/multi-container-docker-client ./client
+      - name: RUN ALL TESTS
+        run: docker run -e CI=true dnyaneshwar89/multi-container-docker-client npm run test -- --coverage
+      - run: echo "FINISHED BUILDING TEST IMAGE AND RAN ALL TESTS SUCCESSFULLY!."
